@@ -11,12 +11,15 @@ const PORT = process.env.PORT;
 //
 // Application entry point.
 //
-async function main() {
+
+
+async function main () {
     const app = express();
+    console.log('Hello world');
 
     app.set("views", path.join(__dirname, "views")); // Set directory that contains templates for views.
     app.set("view engine", "hbs"); // Use hbs as the view engine for Express.
-    
+
     app.use(express.static("public"));
 
     //
@@ -45,7 +48,7 @@ async function main() {
             metadata: videoResponse.data.video,
             url: `/api/video?id=${videoId}`,
         };
-        
+
         // Renders the video for display in the browser.
         res.render("play-video", { video });
     });
@@ -76,8 +79,8 @@ async function main() {
 
         const response = await axios({ // Forwards the request to the video-streaming microservice.
             method: "GET",
-            url: `http://video-streaming/video?id=${req.query.id}`, 
-            data: req, 
+            url: `http://video-streaming/video?id=${req.query.id}`,
+            data: req,
             responseType: "stream",
         });
         response.data.pipe(res);
@@ -90,8 +93,8 @@ async function main() {
 
         const response = await axios({ // Forwards the request to the video-upload microservice.
             method: "POST",
-            url: "http://video-upload/upload", 
-            data: req, 
+            url: "http://video-upload/upload",
+            data: req,
             responseType: "stream",
             headers: {
                 "content-type": req.headers["content-type"],
